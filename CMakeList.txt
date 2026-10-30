@@ -1,0 +1,48 @@
+
+cmake_minimum_required(VERSION 3.20)
+
+project(HoloGuard LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Dependencies
+find_package(OpenCV REQUIRED COMPONENTS
+    core
+    imgproc
+    imgcodecs
+    highgui
+    videoio
+    video
+    objdetect
+    dnn
+    features2d
+    calib3d
+    tracking
+)
+
+find_package(Torch REQUIRED)
+
+# Executable
+add_executable(HoloGuard
+    src/main.cpp
+    src/DatasetLoader.cpp
+    include/DatasetLoader.h
+)
+
+# Include directories
+target_include_directories(HoloGuard PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${OpenCV_INCLUDE_DIRS}
+)
+
+# Compiler flags required by LibTorch
+separate_arguments(TORCH_CXX_FLAGS_LIST NATIVE_COMMAND "${TORCH_CXX_FLAGS}")
+target_compile_options(HoloGuard PRIVATE ${TORCH_CXX_FLAGS_LIST})
+
+# Link libraries
+target_link_libraries(HoloGuard PRIVATE
+    ${OpenCV_LIBS}
+    ${TORCH_LIBRARIES}
+)
