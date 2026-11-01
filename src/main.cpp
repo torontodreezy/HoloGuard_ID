@@ -6,9 +6,8 @@ using namespace std;
 
 
 int main() {
-    cv::Mat img = cv::Mat::zeros(1000, 1000, CV_8UC3);
-
-    cv::imshow("1", img);
+    cv::Mat photo = cv::imread("/home/bladerunner/CLionProjects/engines/dataset/images/origins/ID/id01_04_02/img_0024.jpg");
+    cv::imshow("1", photo);
     cv::waitKey(0);
 
 }
